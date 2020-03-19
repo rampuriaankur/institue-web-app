@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 function CoursePage(props) {
   const [course, setCourse] = useState([]);
+
   //state = { courses: [] };
 
   useEffect(() => {
@@ -12,7 +13,6 @@ function CoursePage(props) {
   }, [props]);
 
   function deleteCourseByid(id) {
-    debugger;
     deleteCourse(id).then(props.history.push("/courses"));
   }
 

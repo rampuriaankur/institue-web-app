@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TextInput from "./common/TextInput";
 import { Link } from "react-router-dom";
+import { getAuthors } from "../api/authorApi";
 
 function CourseForm(props) {
+  const [authors, setAuthor] = useState([]);
+  //state = { courses: [] };
+
+  useEffect(() => {
+    getAuthors().then(author => {
+      setAuthor(author);
+    });
+  }, [props]);
+
   return (
     <form onSubmit={props.onSubmit}>
       <TextInput
@@ -23,9 +33,13 @@ function CourseForm(props) {
             value={props.course.authorId}
             className="form-control"
           >
-            <option value="" />
-            <option value="1">Cory House</option>
-            <option value="2">Scott Allen</option>
+            <option value="" defaultValue>
+              select
+            </option>
+            />
+            {authors.map((author, id) => (
+              <option value={author.id}> {author.authorName}</option>
+            ))}
           </select>
         </div>
         {props.errors.authorId && (
@@ -33,14 +47,21 @@ function CourseForm(props) {
         )}
       </div>
       <TextInput
-        id="category"
-        name="category"
+        id="categoryName"
+        name="categoryName"
         label="Category"
         onChange={props.onchange}
-        value={props.course.category}
-        error={props.errors.category}
+        value={props.course.categoryName}
+        error={props.errors.categoryName}
       />
-      <input type="submit" value="Save" className="btn btn-primary" />{" "}
+      <input
+        id="categoryId"
+        type="hidden"
+        name="categoryId"
+        className="form-control"
+        value={props.course.categoryId}
+      />
+      <input type="submit" value={props.action} className="btn btn-primary" />{" "}
       <Link to="/courses" onClick="" className="btn btn-secondary">
         Cancel
       </Link>

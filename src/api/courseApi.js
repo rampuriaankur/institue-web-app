@@ -19,8 +19,25 @@ export function getCourseBySlug(slug) {
     .catch(handleError);
 }
 
+export function getCourseByCourseId(courseId) {
+  return fetch(baseUrl + "/" + courseId)
+    .then(handleResponse)
+    .catch(handleError);
+  /*
+      if (!response.ok) throw new Error("Network response was not ok.");
+      return response.json().then(courses => {
+        if (courses.length !== 1)
+          throw new Error("Course not found: " + courseId);
+        return courses[0]; // should only find one course for a given slug, so return it.
+      });
+    })
+    .catch(handleError);
+    */
+}
+
 export function saveCourse(course) {
-  return fetch(baseUrl + (course.id || ""), {
+  debugger;
+  return fetch(baseUrl, {
     method: course.id ? "PUT" : "POST", // POST for create, PUT to update when id already exists.
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
