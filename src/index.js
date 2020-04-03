@@ -2,9 +2,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { render } from "react-dom";
 import App from "./component/App";
+import Amplify from "aws-amplify";
+import config from "./config";
 
-//import { BrowserRouter } from "react-router-dom";
-
-//render(<App />, document.getElementById("root"));
+Amplify.configure({
+  Auth: {
+    mandatorySignIn: true,
+    region: config.cognito.REGION,
+    userPoolId: config.cognito.USER_POOL_ID,
+    userPoolWebClientId: config.cognito.APP_CLIENT_ID
+  }
+});
 
 render(<App />, document.getElementById("root"));

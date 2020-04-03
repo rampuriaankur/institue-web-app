@@ -6,12 +6,12 @@ function CourseList(props) {
   }
 
   return (
-    <table className="table">
+    <table className="table table-striped table-bordered">
       <thead>
         <tr>
           <th>Course title</th>
-          <th>Author ID</th>
-          <th>Category</th>
+          <th>Author Name</th>
+          <th>Category Name</th>
           <th>Delete</th>
         </tr>
       </thead>
@@ -22,7 +22,7 @@ function CourseList(props) {
               <td>
                 <Link to={"/course/" + course.id}>{course.title}</Link>{" "}
               </td>
-              <td>{course.authorId}</td>
+              <td>{course.authorName}</td>
               <td>{course.categoryName}</td>
               <td>
                 <button onClick={deleteCourse} value={course.id}>

@@ -17,13 +17,26 @@ function CoursePage(props) {
   }
 
   return (
-    <>
-      <h2> Courses Page </h2>
-      <Link to="course" className="btn btn-primary">
-        Add Course
-      </Link>{" "}
-      <CourseList course={course} deleteCourseByid={deleteCourseByid} />
-    </>
+    <div className="container">
+      {" "}
+      <div className="jumbotron" style={{ backgroundColor: "#5bc0de " }}>
+        <span class="font-weight-bold text-center">
+          <h2> Courses Details</h2>
+        </span>
+      </div>
+      <div className="dataTables_wrapper dt-bootstrap">
+        <div className="row">
+          <div className="col-sm-12 col-md-6">
+            <Link to="course" className="btn btn-primary">
+              <span className=""> Add Course </span>
+            </Link>
+          </div>
+        </div>
+        <div>
+          <CourseList course={course} deleteCourseByid={deleteCourseByid} />
+        </div>
+      </div>
+    </div>
   );
 }
 

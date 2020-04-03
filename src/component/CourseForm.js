@@ -2,16 +2,20 @@ import React, { useState, useEffect } from "react";
 import TextInput from "./common/TextInput";
 import { Link } from "react-router-dom";
 import { getAuthors } from "../api/authorApi";
+import { getCategories } from "../api/CategoryApi";
 
 function CourseForm(props) {
   const [authors, setAuthor] = useState([]);
-  //state = { courses: [] };
+  const [category, setCategory] = useState([]);
 
   useEffect(() => {
     getAuthors().then(author => {
       setAuthor(author);
     });
-  }, [props]);
+    getCategories().then(_category => {
+      setCategory(_category);
+    });
+  }, [props.author, props.category]);
 
   return (
     <form onSubmit={props.onSubmit}>
@@ -46,21 +50,29 @@ function CourseForm(props) {
           <div className="alert alert-danger">{props.errors.authorId}</div>
         )}
       </div>
-      <TextInput
-        id="categoryName"
-        name="categoryName"
-        label="Category"
-        onChange={props.onchange}
-        value={props.course.categoryName}
-        error={props.errors.categoryName}
-      />
-      <input
-        id="categoryId"
-        type="hidden"
-        name="categoryId"
-        className="form-control"
-        value={props.course.categoryId}
-      />
+      <div className="form-group">
+        <label htmlFor="category">Category</label>
+        <div className="field">
+          <select
+            id="categoryId"
+            name="categoryId"
+            onChange={props.onchange}
+            value={props.course.categoryId}
+            className="form-control"
+          >
+            <option value="" defaultValue>
+              select
+            </option>
+            />
+            {category.map((category, id) => (
+              <option value={category.id}>{category.categoryName}</option>
+            ))}
+          </select>
+        </div>
+        {props.errors.categoryId && (
+          <div className="alert alert-danger">{props.errors.categoryId}</div>
+        )}
+      </div>
       <input type="submit" value={props.action} className="btn btn-primary" />{" "}
       <Link to="/courses" onClick="" className="btn btn-secondary">
         Cancel

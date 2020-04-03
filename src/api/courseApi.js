@@ -23,27 +23,24 @@ export function getCourseByCourseId(courseId) {
   return fetch(baseUrl + "/" + courseId)
     .then(handleResponse)
     .catch(handleError);
-  /*
-      if (!response.ok) throw new Error("Network response was not ok.");
-      return response.json().then(courses => {
-        if (courses.length !== 1)
-          throw new Error("Course not found: " + courseId);
-        return courses[0]; // should only find one course for a given slug, so return it.
-      });
-    })
-    .catch(handleError);
-    */
 }
 
 export function saveCourse(course) {
   debugger;
-  return fetch(baseUrl, {
-    method: course.id ? "PUT" : "POST", // POST for create, PUT to update when id already exists.
+  let url = baseUrl;
+  let method = "POST";
+  if (course.id) {
+    url = baseUrl + course.id + "/";
+    method = "PUT";
+  }
+  return fetch(url, {
+    method: method, // POST for create, PUT to update when id already exists.
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
       ...course,
       // Parse authorId to a number (in case it was sent as a string).
-      authorId: parseInt(course.authorId, 10)
+      authorId: parseInt(course.authorId, 10),
+      categoryId: parseInt(course.categoryId, 10)
     })
   })
     .then(handleResponse)

@@ -6,6 +6,9 @@ import AboutPage from "./AboutPage";
 import CoursePage from "./CoursePage";
 import NotFoundPage from "./NotFoundPage";
 import { Route, BrowserRouter, Switch } from "react-router-dom";
+import Registration from "./auth/Registration";
+import Login from "./auth/Login";
+
 import ManageCoursePage from "./ManageCoursePage";
 
 function App() {
@@ -19,7 +22,7 @@ function App() {
 */
 
   return (
-    <div className="container-fluid ">
+    <div className="container-fluid">
       <BrowserRouter>
         <HeaderPage />
         <br />
@@ -30,6 +33,8 @@ function App() {
           <Route path="/deleteCourse/:id" component={CoursePage}></Route>
           <Route path="/course/:id" component={ManageCoursePage}></Route>
           <Route path="/course" component={ManageCoursePage}></Route>
+          <Route path="/Registration" component={Registration}></Route>
+          <Route path="/Login" component={Login}></Route>
 
           <Route component={NotFoundPage} />
         </Switch>

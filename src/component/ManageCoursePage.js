@@ -35,10 +35,9 @@ function ManageCoursePage(props) {
   function isFormValid(event) {
     const _errors = {};
     if (!event.target.title.value) _errors.title = "Title is required";
-    if (!event.target.authorId.value)
-      _errors.authorId = "Author Id is required";
-    if (!event.target.categoryName.value)
-      _errors.categoryName = "Category is required";
+    if (!event.target.authorId.value) _errors.authorId = "Author  is required";
+    if (!event.target.categoryId.value)
+      _errors.categoryId = "Category is required";
     setErrors(_errors);
     return Object.keys(_errors).length === 0;
   }
@@ -49,7 +48,6 @@ function ManageCoursePage(props) {
   }
 
   function onSubmit(event) {
-    debugger;
     event.preventDefault();
     if (!isFormValid(event)) {
       return;
