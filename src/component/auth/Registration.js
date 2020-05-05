@@ -11,8 +11,8 @@ class Registration extends React.Component {
       username: "",
       email: "",
       password: "",
-      confirmpassword: ""
-    }
+      confirmpassword: "",
+    },
   };
 
   clearErrorState = () => {
@@ -24,18 +24,19 @@ class Registration extends React.Component {
         username: null,
         email: null,
         password: null,
-        confirmpassword: null
-      }
+        confirmpassword: null,
+      },
     });
   };
 
-  onInputChange = event => {
+  onInputChange = (event) => {
     this.setState({
-      [event.target.id]: event.target.value
+      [event.target.id]: event.target.value,
     });
   };
 
-  handleSubmit = async event => {
+  handleSubmit = async (event) => {
+    debugger;
     event.preventDefault();
     this.clearErrorState();
     if (!this.validationInput(event)) {
@@ -50,25 +51,26 @@ class Registration extends React.Component {
     if (!errors) {
       this.props.history.push("/");
     } else {
+      console.log("errors:  " + errors);
     }
   };
 
-  validationInput = event => {
+  validationInput = (event) => {
     const _errors = {};
     if (!event.target.form.elements["username"].value)
       _errors.username = "username is required";
     if (!event.target.form.elements["email"].value)
       _errors.email = "email is required";
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       errors: {
         // object that we want to update
         ...prevState.errors,
         username: _errors.username,
-        email: _errors.email
+        email: _errors.email,
         // keep all other key-value pairs
         //  username: _errors.errors.username // update the value of specific key
-      }
+      },
     }));
     //  this.state(..._errors);
     return Object.keys(_errors).length === 0;
@@ -186,24 +188,22 @@ class Registration extends React.Component {
                 <div className="col-sm-3" />
               </div>
               <p className="control has-icons-left" />
-              <div className="field">
-                <p className="control">
-                  <a href="/forgotpassword">Forgot password?</a>
-                </p>
-              </div>
+
               <div className="row">
-                <p className="control .bd-example">
-                  <button
-                    className="btn  btn-success"
-                    onClick={this.handleSubmit}
-                  >
-                    Register
-                  </button>{" "}
-                  <b />
-                  <Link className="btn btn-secondary" to={"/"}>
-                    Cancel
-                  </Link>
-                </p>
+                <div className="col-sm-3">
+                  <p className="control .bd-example">
+                    <button
+                      className="btn  btn-success"
+                      onClick={this.handleSubmit}
+                    >
+                      Register
+                    </button>{" "}
+                    <b />
+                    <Link className="btn btn-secondary" to={"/"}>
+                      Cancel
+                    </Link>
+                  </p>
+                </div>
               </div>
             </form>
           </div>

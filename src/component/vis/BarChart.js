@@ -56,26 +56,26 @@ class BarChart extends Component {
     ];
     return (
       <div>
-        <XYPlot height={300} width={200} xType="ordinal" yDomain={[0, 70]}>
+        <XYPlot height={300} width={600} xType="ordinal" yDomain={[0, 15]}>
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis />
           <YAxis />
 
           <VerticalBarSeries
-            data={data1}
+            data={data}
             colorType="literal"
             color="red"
             stroke="#12939a"
           />
 
-          <VerticalBarSeries
+          {/* <VerticalBarSeries
             data={data1}
             colorType="literal"
             // fill="style"
             color="green"
             stroke="#12939a"
-          />
+          /> */}
 
           {
             //this.createBar(data)

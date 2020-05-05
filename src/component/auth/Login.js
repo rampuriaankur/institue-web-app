@@ -1,100 +1,101 @@
 import React, { Component } from "react";
-import { Auth } from "aws-amplify";
+
 import FormErrors from "../common/FormErrors";
 import { Link } from "react-router-dom";
-
+import * as Auth from "../../api/awsAuth";
+import Banner from "../Banner";
 class Login extends Component {
   state = {
     username: "",
     password: "",
     errors: {
-      cognito: null,
-      blankfield: false
-    }
+      cognito: "",
+      unameError: "",
+      passError: "",
+    },
   };
 
   clearErrorState = () => {
-    this.setState({
+    this.setState((prevState) => ({
       errors: {
-        cognito: null,
-        blankfield: false
-      }
-    });
+        ...prevState.errors,
+        unameError: "",
+        passError: "",
+        cognito: "",
+      },
+    }));
   };
 
-  Validate = event => {
+  Validate = (event) => {
     const _errors = {};
     if (!event.target.elements["username"].value)
-      _errors.username = "username is required";
+      _errors.unameError = "username is required";
     if (!event.target.elements["password"].value)
-      _errors.password = "password is required";
+      _errors.passError = "password is required";
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       errors: {
-        // object that we want to update
         ...prevState.errors,
-        username: _errors.username,
-        password: _errors.password
-        // keep all other key-value pairs
-        //  username: _errors.errors.username // update the value of specific key
-      }
+        unameError: _errors.unameError,
+        passError: _errors.passError,
+      },
     }));
-    //  this.state(..._errors);
+
     return Object.keys(_errors).length === 0;
   };
 
-  handleSubmit = async event => {
+  doLogin = async (username, password) => {
     debugger;
-    event.preventDefault();
+    const signInResponse = await Auth.login(username, password);
 
-    // Form validation
-    this.clearErrorState();
-    const error = this.Validate(event, this.state);
-    if (error) {
-      this.setState({
-        errors: { ...this.state.errors, ...error }
-      });
-    }
-    /*
-    // AWS Cognito integration here
-    try {
-      const user = await Auth.signIn(this.state.username, this.state.password);
-      console.log(user);
-      this.props.auth.setAuthStatus(true);
-      this.props.auth.setUser(user);
-      this.props.history.push("/");
-    } catch (error) {
-      let err = null;
-      !error.message ? (err = { message: error }) : (err = error);
-      this.setState({
+    if (signInResponse.errors) {
+      this.setState((prevState) => ({
         errors: {
-          ...this.state.errors,
-          cognito: err
-        }
-      });
-
+          ...prevState.errors,
+          cognito: signInResponse.errors,
+        },
+      }));
+    } else {
+      const user = signInResponse.data;
+      this.props.auth.setUser(user);
+      this.props.auth.setAuthenticated(true);
+      this.props.history.push("/");
     }
-  */
   };
 
-  onInputChange = event => {
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.clearErrorState();
+
+    const isFormValidationPass = this.Validate(event, this.state);
+    if (isFormValidationPass) {
+      this.doLogin(this.state.username, this.state.password);
+    }
+  };
+
+  onInputChange = (event) => {
     this.setState({
-      [event.target.id]: event.target.value
+      [event.target.id]: event.target.value,
     });
     document.getElementById(event.target.id).classList.remove("is-danger");
   };
 
   render() {
     return (
-      <section className="section auth">
-        <div className="container">
+      <section className="section auth center">
+        <Banner />
+        <div className="container ">
           <form onSubmit={this.handleSubmit}>
             <h1>Log in</h1>
             <p className="control has-icons-left" />
             <p className="control has-icons-left" />
-
-            <FormErrors formerrors={this.state.errors} />
-
+            <div className="row">
+              <div className="col-sm-5">
+                <FormErrors formerrors={this.state.errors.cognito} />
+              </div>
+            </div>
+            <p className="control has-icons-left" />
+            <p className="control has-icons-left" />
             <div className="row">
               <div className="col-sm-2">
                 <label htmlFor="username" className="mr-2">
@@ -115,10 +116,10 @@ class Login extends Component {
               </div>
 
               <div className="col-sm-5">
-                {this.state.errors.username && (
-                  <div className="alert alert-danger">
-                    {this.state.errors.username}
-                  </div>
+                {this.state.errors.unameError && (
+                  <span className=" container alert-danger is-danger">
+                    <strong> {this.state.errors.unameError}</strong>
+                  </span>
                 )}
               </div>
             </div>
@@ -138,28 +139,32 @@ class Login extends Component {
                   placeholder="Password"
                   value={this.state.password}
                   onChange={this.onInputChange}
-                />{" "}
+                />
               </div>
 
               <div className="col-sm-5">
-                {this.state.errors.password && (
-                  <div className="alert alert-danger">
-                    {this.state.errors.password}
-                  </div>
+                {this.state.errors.passError && (
+                  <span className=" container alert-danger is-danger">
+                    <strong> {this.state.errors.passError}</strong>
+                  </span>
                 )}
               </div>
             </div>
 
             <div className="row">
-              <a href="/forgotpassword">Forgot password?</a>
+              <div className="col-sm-2">
+                <a href="/forgotpassword">Forgot password?</a>
+              </div>
             </div>
             <p className="control has-icons-left" />
             <div className="row">
-              <button className="btn  btn-success">Login</button>
-              <b />
-              <Link className="btn btn-secondary" to={"/"}>
-                Cancel
-              </Link>
+              <div className="col-sm-2">
+                <button className="btn  btn-success">Login</button>
+                <b /> <b /> <b />
+                <Link className="btn btn-secondary" to={"/"}>
+                  Cancel
+                </Link>
+              </div>
             </div>
           </form>
         </div>

@@ -27,7 +27,7 @@ class CricleChart extends Component {
     ];
     return (
       <div>
-        <XYPlot height={300} width={600}>
+        <XYPlot height={300} width={600} xType="ordinal" yDomain={[0, 15]}>
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis />

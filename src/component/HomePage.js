@@ -1,12 +1,10 @@
 import React from "react";
 import GraphicLayout from "./vis/GraphicLayout";
+import Banner from "./Banner";
 function HelloPage() {
   return (
     <>
-      <div className="jumbotron">
-        <h1>ABC Adminstration</h1>
-        <p>React, Flux and React Router for ultra -responsive web apps. </p>
-      </div>
+      <Banner />
       <div>
         <GraphicLayout />
       </div>
